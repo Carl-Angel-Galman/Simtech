@@ -1,0 +1,116 @@
+% ============================================
+% Linearisierung Einspurmodell – Herleitung
+% (jede Gleichung einzeln, ohne "alles ineinander")
+% ============================================
+
+\subsection{Betriebspunkt und Linearisierungsannahmen}
+Betriebspunkt (Geradeausfahrt):
+\begin{equation}
+\delta_0 = 0,\qquad \beta_0 = 0,\qquad \dot{\Psi}_0 = 0.
+\end{equation}
+
+Für kleine Winkel um $0$ (in rad) werden die nichtlinearen Terme durch Taylor-Approximationen 1. Ordnung ersetzt:
+\begin{align}
+\tan(\beta) &\approx \beta, \label{eq:tanlin}\\
+\cos(\beta) &\approx 1 \quad \Rightarrow \quad \frac{1}{\cos(\beta)} \approx 1, \label{eq:cosbetalin}\\
+\cos(\delta) &\approx 1. \label{eq:cosdeltalin}
+\end{align}
+
+% ------------------------------------------------
+\subsection{Linearisierung der Schräglaufwinkel}
+
+\subsubsection{Vorderachse}
+Aus der Aufgabenstellung:
+\begin{equation}
+\alpha_v \;=\; \delta \;-\;\frac{l_v\,\dot{\Psi}}{v\,\cos(\beta)}\;+\;\tan(\beta).
+\end{equation}
+Linearisierung 1. Ordnung mittels \eqref{eq:tanlin} und \eqref{eq:cosbetalin}:
+\begin{align}
+\alpha_v
+&\approx \delta \;-\;\frac{l_v\,\dot{\Psi}}{v}\;+\;\beta.
+\end{align}
+Damit ergibt sich der linearisierte Schräglaufwinkel an der Vorderachse:
+\begin{equation}
+\boxed{\alpha_v^{\mathrm{lin}} \;=\; \delta \;+\;\beta \;-\;\frac{l_v}{v}\,\dot{\Psi}}
+\end{equation}
+
+\subsubsection{Hinterachse}
+Aus der Aufgabenstellung:
+\begin{equation}
+\alpha_h \;=\; \frac{l_h\,\dot{\Psi}}{v\,\cos(\beta)}\;-\;\tan(\beta).
+\end{equation}
+Linearisierung 1. Ordnung mittels \eqref{eq:tanlin} und \eqref{eq:cosbetalin}:
+\begin{align}
+\alpha_h
+&\approx \frac{l_h\,\dot{\Psi}}{v}\;-\;\beta.
+\end{align}
+Damit ergibt sich der linearisierte Schräglaufwinkel an der Hinterachse:
+\begin{equation}
+\boxed{\alpha_h^{\mathrm{lin}} \;=\; -\beta \;+\;\frac{l_h}{v}\,\dot{\Psi}}
+\end{equation}
+
+% ------------------------------------------------
+\subsection{Linearisierung der \texorpdfstring{$\dot{\beta}$}{beta-dot}-Gleichung}
+
+Aus der Aufgabenstellung:
+\begin{equation}
+\dot{\beta} \;=\; -\dot{\Psi} \;+\; \frac{1}{m\,v}
+\left(
+c_v\,\alpha_v\,\frac{\cos(\delta)}{\cos(\beta)} \;+\;
+c_h\,\alpha_h\,\frac{1}{\cos(\beta)}
+\right).
+\end{equation}
+
+Linearisierung der rein trigonometrischen Faktoren mittels \eqref{eq:cosbetalin} und \eqref{eq:cosdeltalin}:
+\begin{align}
+\frac{1}{\cos(\beta)} &\approx 1,\\
+\frac{\cos(\delta)}{\cos(\beta)} &\approx 1.
+\end{align}
+
+Damit folgt die linearisiert dargestellte Struktur (ohne Einsetzen von $\alpha_v^{\mathrm{lin}},\alpha_h^{\mathrm{lin}}$):
+\begin{equation}
+\boxed{
+\dot{\beta}^{\mathrm{lin}}
+\;=\;
+-\dot{\Psi}
+\;+\;
+\frac{1}{m\,v}
+\left(
+c_v\,\alpha_v^{\mathrm{lin}}
++
+c_h\,\alpha_h^{\mathrm{lin}}
+\right)
+}
+\end{equation}
+
+% ------------------------------------------------
+\subsection{Linearisierung der \texorpdfstring{$\ddot{\Psi}$}{Psi-ddot}-Gleichung}
+
+Aus der Aufgabenstellung:
+\begin{equation}
+\ddot{\Psi} \;=\; \frac{1}{J}
+\left(
+l_v\,c_v\,\alpha_v\,\cos(\delta)
+\;-\;
+l_h\,c_h\,\alpha_h
+\right).
+\end{equation}
+
+Linearisierung des Faktors $\cos(\delta)$ mittels \eqref{eq:cosdeltalin}:
+\begin{align}
+\cos(\delta) \approx 1.
+\end{align}
+
+Damit folgt die linearisiert dargestellte Struktur (ohne Einsetzen von $\alpha_v^{\mathrm{lin}},\alpha_h^{\mathrm{lin}}$):
+\begin{equation}
+\boxed{
+\ddot{\Psi}^{\mathrm{lin}}
+\;=\;
+\frac{1}{J}
+\left(
+l_v\,c_v\,\alpha_v^{\mathrm{lin}}
+\;-\;
+l_h\,c_h\,\alpha_h^{\mathrm{lin}}
+\right)
+}
+\end{equation}

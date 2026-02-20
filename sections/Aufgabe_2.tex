@@ -1,0 +1,18 @@
+Für Aufgabe 2 wurde das nichtlineare Einspurmodell in Simulink als separates Subsystem umgesetzt. 
+Die Umrechnung der Winkelgr\"o\ss en von Grad in Radiant sowie von Radiant in Grad erfolgte im Hauptsystem; 
+die umgerechneten Signale wurden anschlie\ss end an das nichtlineare Subsystem \"ubergegeben. 
+Innerhalb dieses Subsystems wurden die Modellgleichungen in vier weiteren Untersystemen jeweils einzeln modelliert. 
+Diese Untersysteme wurden danach entsprechend der Signalfl\"usse miteinander verbunden, sodass aus den einzelnen Teilgleichungen das vollst\"andige nichtlineare Gesamtmodell entstand.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\linewidth]{pictures/Aufgabe2Scope.png}
+    \caption{Sprungantwort des nichtlinearen Einspurmodells bei einem Lenkwinkelsprung auf $5^\circ$:
+    Schwimmwinkel $\beta$ (in Grad) und Giergeschwindigkeit $\dot{\Psi}$ (in Grad/s).}
+    \label{fig:aufgabe2scope}
+\end{figure}
+
+Abbildung~\ref{fig:aufgabe2scope} zeigt die Reaktion des nichtlinearen Modells auf einen Lenkwinkelsprung von $0^\circ$ auf $5^\circ$ (bei $t \approx 1\,\mathrm{s}$).
+Unmittelbar nach dem Sprung steigt die Giergeschwindigkeit $\dot{\Psi}$ stark an und zeigt ein deutliches \"Uberschwingen mit anschlie\ss end ged\"ampften Schwingungen, bevor sich ein station\"arer Endwert einstellt. 
+Der Schwimmwinkel $\beta$ reagiert ebenfalls transient und schwingt kurzzeitig, bleibt jedoch im Vergleich zur Giergeschwindigkeit betragsm\"a\ss ig klein und konvergiert nach der Einschwingphase zu einem nahezu konstanten Wert.
+Das ged\"ampfte \"Uberschwingen deutet auf ein stabiles, aber unterd\"ampftes Systemverhalten hin; die station\"aren Endwerte entsprechen dem station\"aren Kurvenfahrtzustand bei konstantem Lenkwinkel.
