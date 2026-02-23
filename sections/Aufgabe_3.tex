@@ -1,0 +1,160 @@
+% ============================================
+% Linearisierung Einspurmodell – Herleitung
+% (jede Gleichung einzeln, ohne "alles ineinander")
+% ============================================
+
+\subsection{Betriebspunkt und Linearisierungsannahmen}
+Betriebspunkt (Geradeausfahrt):
+\begin{equation}
+\delta_0 = 0,\qquad \beta_0 = 0,\qquad \dot{\Psi}_0 = 0.
+\end{equation}
+
+Für kleine Winkel um $0$ (in rad) werden die nichtlinearen Terme durch Taylor-Approximationen 1. Ordnung ersetzt:
+\begin{align}
+\tan(\beta) &\approx \beta, \label{eq:tanlin}\\
+\cos(\beta) &\approx 1 \quad \Rightarrow \quad \frac{1}{\cos(\beta)} \approx 1, \label{eq:cosbetalin}\\
+\cos(\delta) &\approx 1. \label{eq:cosdeltalin}
+\end{align}
+
+% ------------------------------------------------
+\subsection{Linearisierung der Schräglaufwinkel}
+
+\subsubsection{Vorderachse}
+Aus der Aufgabenstellung:
+\begin{equation}
+\alpha_v \;=\; \delta \;-\;\frac{l_v\,\dot{\Psi}}{v\,\cos(\beta)}\;+\;\tan(\beta).
+\end{equation}
+Linearisierung 1. Ordnung mittels \eqref{eq:tanlin} und \eqref{eq:cosbetalin}:
+\begin{align}
+\alpha_v
+&\approx \delta \;-\;\frac{l_v\,\dot{\Psi}}{v}\;+\;\beta.
+\end{align}
+Damit ergibt sich der linearisierte Schräglaufwinkel an der Vorderachse:
+\begin{equation}
+\boxed{\alpha_v^{\mathrm{lin}} \;=\; \delta \;+\;\beta \;-\;\frac{l_v}{v}\,\dot{\Psi}}
+\end{equation}
+
+\subsubsection{Hinterachse}
+Aus der Aufgabenstellung:
+\begin{equation}
+\alpha_h \;=\; \frac{l_h\,\dot{\Psi}}{v\,\cos(\beta)}\;-\;\tan(\beta).
+\end{equation}
+Linearisierung 1. Ordnung mittels \eqref{eq:tanlin} und \eqref{eq:cosbetalin}:
+\begin{align}
+\alpha_h
+&\approx \frac{l_h\,\dot{\Psi}}{v}\;-\;\beta.
+\end{align}
+Damit ergibt sich der linearisierte Schräglaufwinkel an der Hinterachse:
+\begin{equation}
+\boxed{\alpha_h^{\mathrm{lin}} \;=\; -\beta \;+\;\frac{l_h}{v}\,\dot{\Psi}}
+\end{equation}
+
+% ------------------------------------------------
+\subsection{Linearisierung der \texorpdfstring{$\dot{\beta}$}{beta-dot}-Gleichung}
+
+Aus der Aufgabenstellung:
+\begin{equation}
+\dot{\beta} \;=\; -\dot{\Psi} \;+\; \frac{1}{m\,v}
+\left(
+c_v\,\alpha_v\,\frac{\cos(\delta)}{\cos(\beta)} \;+\;
+c_h\,\alpha_h\,\frac{1}{\cos(\beta)}
+\right).
+\end{equation}
+
+Linearisierung der rein trigonometrischen Faktoren mittels \eqref{eq:cosbetalin} und \eqref{eq:cosdeltalin}:
+\begin{equation}
+\boxed{
+\dot{\beta}^{\mathrm{lin}}
+\;=\;
+-\dot{\Psi}
+\;+\;
+\frac{1}{m\,v}
+\left(
+c_v\,\alpha_v^{\mathrm{lin}}
++
+c_h\,\alpha_h^{\mathrm{lin}}
+\right)
+}
+\end{equation}
+
+% ------------------------------------------------
+\subsection{Linearisierung der \texorpdfstring{$\ddot{\Psi}$}{Psi-ddot}-Gleichung}
+
+Aus der Aufgabenstellung:
+\begin{equation}
+\ddot{\Psi} \;=\; \frac{1}{J}
+\left(
+l_v\,c_v\,\alpha_v\,\cos(\delta)
+\;-\;
+l_h\,c_h\,\alpha_h
+\right).
+\end{equation}
+
+Linearisierung des Faktors $\cos(\delta)$ mittels \eqref{eq:cosdeltalin}:
+\begin{equation}
+\boxed{
+\ddot{\Psi}^{\mathrm{lin}}
+\;=\;
+\frac{1}{J}
+\left(
+l_v\,c_v\,\alpha_v^{\mathrm{lin}}
+\;-\;
+l_h\,c_h\,\alpha_h^{\mathrm{lin}}
+\right)
+}
+\end{equation}
+
+% ------------------------------------------------
+\subsection{Simulink-Aufbau und Ergebnisvergleich}
+Das lineare Modell wurde in der bestehenden Simulink-Datei als eigenes Subsystem umgesetzt und vom nichtlinearen Modell getrennt.
+Fur die Sprunge $\delta = 5^\circ$ und $\delta = 20^\circ$ wurden beide Modelle nacheinander simuliert.
+Zusatzlich wurde die Differenz zwischen linearem und nichtlinearem Modell als Verlauf im Scope dargestellt und der betragmassig maximale Wert im Modell berechnet und auf einem Display ausgegeben.
+
+\subsubsection{Sprung auf $\delta = 5^\circ$}
+Die folgenden Abbildungen zeigen den Vergleich der linearen und nichtlinearen Simulation sowie die zugehorigen Differenzsignale fur den Sprung auf $\delta = 5^\circ$.
+
+\begin{figure}[h]
+	\centering
+	\begin{minipage}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{pictures/Aufgabe3ScopeSprung5.png}
+		\textit{(a) Vergleich lineares/nichtlineares Modell}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{pictures/Aufgabe3ScopeSprung5dif.png}
+		\textit{(b) Differenzsignale}
+	\end{minipage}
+	\caption{Sprungantwort bei $\delta = 5^\circ$.}
+	\label{fig:aufgabe3sprung5}
+\end{figure}
+
+Abbildung~\ref{fig:aufgabe3sprung5} zeigt, dass das linearisierte System fur den kleinen Sprung $\delta = 5^\circ$ die nichtlineare Dynamik nahezu deckungsgleich abbildet.
+Die Differenzsignale bleiben sehr klein, und die maximale Abweichung ist entsprechend gering.
+Auf dem Display wurden die betragmassig maximalen Differenzen mit 0.0031 ($\beta$ in Grad) und 0.0569 ($\dot{\Psi}$ in Grad/s) ausgegeben.
+
+\subsubsection{Sprung auf $\delta = 20^\circ$}
+Die folgenden Abbildungen zeigen den Vergleich der linearen und nichtlinearen Simulation sowie die zugehorigen Differenzsignale fur den Sprung auf $\delta = 20^\circ$.
+
+\begin{figure}[h]
+	\centering
+	\begin{minipage}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{pictures/Aufgabe3ScopeSprung20.png}
+		\textit{(a) Vergleich lineares/nichtlineares Modell}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{pictures/Aufgabe3ScopeSprung20dif.png}
+		\textit{(b) Differenzsignale}
+	\end{minipage}
+	\caption{Sprungantwort bei $\delta = 20^\circ$.}
+	\label{fig:aufgabe3sprung20}
+\end{figure}
+
+Abbildung~\ref{fig:aufgabe3sprung20} zeigt, dass das lineare Modell bei $\delta = 20^\circ$ deutlich ungenauer wird.
+Die Abweichung nimmt sichtbar zu, und das lineare Modell pendelt sich auf einem anderen stationaren Wert ein.
+Auf dem Display wurden die betragmassig maximalen Differenzen mit 0.1947 ($\beta$ in Grad) und 3.6382 ($\dot{\Psi}$ in Grad/s) ausgegeben.
+Dies liegt daran, dass der Sprung weit vom Linearisierungsarbeitspunkt entfernt ist und die Vernachlassigung der nichtlinearen Terme nicht mehr gerechtfertigt ist.
