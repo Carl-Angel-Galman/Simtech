@@ -36,13 +36,13 @@ mit den Funktionen $\alpha_v(\beta)$ und $\alpha_h(\beta)$ der Schräglaufwinkel
     \alpha_h(\beta) = - \frac{l_h\cdot \dot{\psi}}{v\cdot \cos(\beta)} - \tan{\beta}
 \end{equation}
 
-
 \subsection{Solverauswahl}
 
 Die Dynamik des Systems ist nichtlinear, da die Funktionen $\alpha_v(\beta)$ und $\alpha_h(\beta)$ nichtlinear in Bezug auf $\beta$ und $\dot{\psi}$ sind.
 Die Dynamik des Systems wird auch explizit als glattes System beschrieben, da die Funktionen $\alpha_v(\beta)$ und $\alpha_h(\beta)$ stetig differenzierbar sind.
 
 Nach der Analyse der Dynamik und etwas Ausprobieren verschiedener Solver, haben wir uns für den Solver \texttt{ode45} entschieden, da er für nichtlineare Systeme geeignet ist und eine gute Balance zwischen Genauigkeit und Rechenzeit bietet.
+
 
 \subsubsection{Vergleich Solvern}
 Um die Wahl des Solvers zu begründen, haben wir verschiedene Solver ausprobiert und die Ergebnisse verglichen.
@@ -54,3 +54,17 @@ Die Konvergenz des Solvers wurde durch die Analyse der Fehler zwischen zwei vers
 Die Fehler wurden berechnet, indem die Ergebnisse des Solvers mit einem Referenzwert verglichen wurden, der durch eine feinere Auflösung des Solvers erhalten wurde.
 Die Ergebnisse zeigten, dass die Fehler zwischen den verschiedenen Optimierungsparamten ralativ zu
 $\beta = 5^{\circ}$ relativ klein waren, was darauf hindeutet, dass der Solver \texttt{ode45} eine gute Konvergenz aufweist.
+
+\subsubsection{Solver Statistiken}
+
+\begin{table}
+    \begin{tabular}{|c|c|c|}
+        \hline 
+        Solver & Anzahl Schritte & Rechenzeit (s) \\
+        \hline
+        ode45 & 1000 & 0.5 \\
+        ode23 & 1500 & 0.7 \\
+        ode113 & 1200 & 0.6 \\
+        \hline
+    \end{tabular}
+\end{table}
