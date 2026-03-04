@@ -1,116 +1,89 @@
-%% Aufgabe 4: Bode aus Simulation (alles in GRAD, Sweep in Hz) – Variante B (Fast Restart an, FixedStep konstant)
+%% Frequenzgang des linearen Einspurmodells (0.05 Hz – 100 Hz) – gleiche Plotgröße, exakter Bereich
+
+clear; clc;
+
 mdl = "linear_Einspurmodel";
-load_system(mdl)
+load_system(mdl);
 
-% Modellparameter
-v = 18; % m/s
-assignin('base','v', v);
+% Fahrzeuggeschwindigkeit
+v = 18;
+assignin("base","v",v);
 
-% Sweep-Parameter (Frequenz in Hz)
-AmpDeg = 1;        % Eingangsamplitude in GRAD
-fmin   = 0.05;     % Hz
-fmax   = 100;      % Hz
-Npts   = 60;       % Anzahl Frequenzpunkte (logarithmisch)
+A = 1; % Lenkwinkelamplitude [deg]
 
-fList = logspace(log10(fmin), log10(fmax), Npts);
-wList = 2*pi*fList;   % rad/s
+% Frequenzbereich in Hz (exakt)
+f_min = 0.05;
+f_max = 100;
+f = logspace(log10(f_min), log10(f_max), 60);
+w = 2*pi*f;  % rad/s
 
-% Ergebnis
-mag = nan(size(wList));     % Betrag |beta/delta| (deg/deg, einheitenfrei)
-ph  = nan(size(wList));     % Phase in Grad
+mag   = zeros(size(f));
+phase = zeros(size(f));
 
-% ---- Fixed-step EINMAL festlegen (darf in Fast Restart nicht verändert werden!) ----
-% Bei fmax=100 Hz ist Tmin=0.01 s. Mit 200 Punkten/Periode: dt=5e-5 s.
-pointsPerPeriod = 200;
-dtFixed = (1/fmax) / pointsPerPeriod;   % 5e-5 s
+for k = 1:length(w)
+    wk = w(k);
+    T  = 2*pi/wk;
 
+    % Simulationszeit (mehrere Perioden)
+    t_end = 12*T;
+    t = linspace(0, t_end, 4000)';
 
-% Fast Restart einschalten
-set_param(mdl, "FastRestart", "off");
+    % Sinuslenkung
+    u = A*sin(wk*t);
+    u_ext = [t u];
 
-set_param(mdl, ...
-    "SolverType","Fixed-step", ...
-    "Solver","ode4", ...
-    "FixedStep", num2str(dtFixed));
+    % Simulation
+    simIn = Simulink.SimulationInput(mdl);
+    simIn = simIn.setVariable("u_ext", u_ext);
+    simIn = simIn.setVariable("v", v);
+    simIn = simIn.setModelParameter( ...
+        "LoadExternalInput","on", ...
+        "ExternalInput","u_ext", ...
+        "StopTime", num2str(t_end), ...
+        "SignalLogging","on", ...
+        "SignalLoggingName","logsout");
 
+    simOut = sim(simIn);
 
+    % Output beta
+    beta_ts = simOut.logsout.getElement("beta").Values;
+    y = beta_ts.Data;
+    t = beta_ts.Time;
 
-for k = 1:numel(wList)
-    w = wList(k);          % rad/s
-    T = 2*pi/w;            % Periodendauer (s)
+    % stationären Bereich auswerten
+    idx = t > 6*T;
+    t = t(idx);
+    y = y(idx);
 
-    % Simulationsdauer (Perioden)
-    Ntotal = 20;
-    Nskip  = 10;
-    tStop  = Ntotal * T;
+    % Sinusfit -> Betrag & Phase
+    S = sin(wk*t);
+    C = cos(wk*t);
+    p = [S C]\y;
 
-    % Zeitvektor mit FESTER Schrittweite
-    t = (0:dtFixed:tStop)';
+    A_out = hypot(p(1), p(2));
+    phi   = atan2(p(2), p(1));
 
-    % Eingang delta(t) in GRAD
-    delta_deg = AmpDeg * sin(w*t);
-
-    % External Input [t, u]
-    u_ext = [t delta_deg];
-    assignin('base','u_ext',u_ext);
-
-    set_param(mdl, 'LoadExternalInput', 'on');
-    set_param(mdl, 'ExternalInput', 'u_ext');
-
-    % StopTime darf in FastRestart geändert werden
-    simOut = sim(mdl, 'StopTime', num2str(tStop));
-
-    % Output beta in GRAD aus logsout
-    beta_ts  = simOut.logsout.getElement('beta').Values;  % timeseries
-    beta_deg = beta_ts.Data(:);
-    t_beta   = beta_ts.Time(:);
-
-    % delta auf Zeitbasis von beta (zur Sicherheit)
-    delta_deg_i = interp1(t, delta_deg, t_beta, 'linear', 'extrap');
-
-    % Einschwingteil weg: ab t >= Nskip*T
-    idx = t_beta >= (Nskip*T);
-    te = t_beta(idx);
-    de = delta_deg_i(idx);
-    be = beta_deg(idx);
-
-    % --- Amplitude & Phase per Sinus-Fit ---
-    % Fit: y(t) = a*sin(w t) + b*cos(w t) + c
-    X = [sin(w*te), cos(w*te), ones(size(te))];
-
-    pD = X \ de;   % delta-fit
-    pB = X \ be;   % beta-fit
-
-    ampD = hypot(pD(1), pD(2));       % Amplitude in GRAD
-    ampB = hypot(pB(1), pB(2));       % Amplitude in GRAD
-
-    phiD = atan2(pD(2), pD(1));       % Phase in rad
-    phiB = atan2(pB(2), pB(1));       % Phase in rad
-
-    mag(k) = ampB / ampD;             % deg/deg -> einheitenfrei
-
-    dphi = phiB - phiD;
-    dphi = atan2(sin(dphi), cos(dphi)); % wrap [-pi,pi]
-    ph(k) = dphi * 180/pi;            % Phase in Grad
+    mag(k)   = 20*log10(A_out/A);
+    phase(k) = rad2deg(phi);
 end
 
-% Fast Restart aus
-set_param(mdl, "FastRestart", "off");
+%% Plot-Layout (beide Figuren exakt gleich groß)
+figPos = [100 100 900 520];   % [x y breite höhe] – beliebig, aber gleich für beide
 
-% Phase entwirren (optional schöner Plot)
-ph_unwrap = unwrap(ph*pi/180) * 180/pi;
+% Verstärkung
+figure('Position', figPos);
+semilogx(f, mag, 'LineWidth', 1.5);
+grid on;
+xlim([f_min f_max]);          % Bereich exakt 0.05..100 Hz
+xlabel('f [Hz]');
+ylabel('Verstärkung [dB]');
+title('Frequenzgang Betrag');
 
-% Bode plots (x-Achse in Hz)
-mag_dB = 20*log10(mag);
-
-figure;
-semilogx(fList, mag_dB, "LineWidth", 1.5); grid on;
-xlabel('f (Hz)');
-ylabel('Magnitude 20log_{10}(|\beta/\delta|) (dB)');
-title('Bode aus Simulation (Grad-System): \beta/\delta');
-
-figure;
-semilogx(fList, ph_unwrap, "LineWidth", 1.5); grid on;
-xlabel('f (Hz)');
-ylabel('Phase(\beta) - Phase(\delta) (deg)');
-title('Phase aus Simulation (Grad-System): \beta/\delta');
+% Phase
+figure('Position', figPos);
+semilogx(f, phase, 'LineWidth', 1.5);
+grid on;
+xlim([f_min f_max]);          % Bereich exakt 0.05..100 Hz
+xlabel('f [Hz]');
+ylabel('Phase [deg]');
+title('Frequenzgang Phase');
