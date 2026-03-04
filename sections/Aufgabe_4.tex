@@ -1,38 +1,73 @@
 \subsection{Vorgehen}
-Zur Analyse des Frequenzverhaltens wurde das in Aufgabe~3 hergeleitete (linear) Modell im Frequenzbereich untersucht.
-Hierzu wurden in Simulink ein \emph{Linear Input} am Eingangssignal des Lenkwinkels $\delta$ (in Grad) sowie ein
-\emph{Linear Output} am Ausgangssignal des Schwimmwinkels $\beta$ (in Grad) gesetzt. Anschlie\ss end wurde das Modell
-am Geradeaus-Betriebspunkt ($\delta_0=0$, $\beta_0=0$, $\dot{\Psi}_0=0$) linearisiert und der Frequenzgang
-$G(j\omega)=\beta(j\omega)/\delta(j\omega)$ mit Hilfe der Control-System-Analyse (Control System Designer / Linear Analysis)
-als Bodediagramm dargestellt. Der in der Aufgabenstellung geforderte Sinuseingang mit der Amplitude $1^\circ$ ist dabei
-durch die Normierung des Frequenzgangs abgedeckt: F\"ur ein lineares zeitinvariantes System skaliert die Ausgangsamplitude
-im eingeschwungenen Zustand proportional zur Eingangsamplitude, sodass bei $\hat{\delta}=1^\circ$ direkt
-$\hat{\beta}(\omega)=|G(j\omega)|\cdot 1^\circ$ gilt.
+Zur Untersuchung des Frequenzverhaltens wurde das in Aufgabe~3 hergeleitete und am Geradeaus-Betriebspunkt
+$(\delta_0=0^\circ,\ \beta_0=0^\circ,\ \dot{\Psi}_0=0)$ linearisierte Einspurmodell verwendet
+(das Simulink-Modell liegt der Arbeit bei).
 
-\begin{figure}[h]
+Der Frequenzgang von $\delta$ nach $\beta$ wurde mit einem MATLAB-Skript über zeitbereichsbasierte Sinusanregung
+bestimmt. Dazu wurde für logarithmisch verteilte Frequenzen im Bereich $0{,}05\,\mathrm{Hz}$ bis
+$100\,\mathrm{Hz}$ jeweils eine Simulation des linearen Modells mit
+\[
+\delta(t)=\hat{\delta}\sin(2\pi f t), \qquad \hat{\delta}=1^\circ,
+\]
+durchgeführt. Nach Abklingen der Einschwinganteile wurden aus einem stationären Zeitabschnitt der Ausganggröße
+$\beta(t)$ mittels Sinusapproximation Amplitude $\hat{\beta}(f)$ und Phasenverschiebung $\varphi(f)$ bestimmt.
+Damit ergeben sich Betrag und Phase des Frequenzgangs zu
+\[
+|G(j2\pi f)|=\frac{\hat{\beta}(f)}{\hat{\delta}}, \qquad \angle G(j2\pi f)=\varphi(f),
+\]
+wobei der Betrag als $20\log_{10}(|G|)$ in \si{dB} und die Phase in Grad dargestellt wurde.
+
+% Für [H] muss im Präambel stehen: \usepackage{float}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.95\linewidth]{pictures/Aufgabe4Bode.png}
-    \caption{Bodediagramm des Schwimmwinkel $\beta$ bei Verwendung des nichtlinearen Einspurmodells bei einem Lenkwinkelsprung auf $1^\circ$:
-    Amplitudengang (oben) und Phasengang (unten).}
-    \label{fig:aufgabe4bode}
+    \includegraphics[width=0.95\linewidth]{pictures/Aufgabe4Amplitude.png}
+    \caption{Betragsgang von $G(j2\pi f)=\beta/\delta$ für $f\in[0{,}05,100]\,\mathrm{Hz}$ ($\hat{\delta}=1^\circ$).}
+    \label{fig:aufgabe4_amplitude}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{pictures/Aufgabe4Phase.png}
+    \caption{Phasengang von $G(j2\pi f)=\beta/\delta$ für $f\in[0{,}05,100]\,\mathrm{Hz}$ ($\hat{\delta}=1^\circ$).}
+    \label{fig:aufgabe4_phase}
 \end{figure}
 
 \subsection{Interpretation}
-Abbildung~\ref{fig:aufgabe4bode} zeigt den Amplituden- und Phasengang der \"Ubertragungsfunktion von $\delta$ nach $\beta$.
-Bei niedrigen Frequenzen ist der Amplitudengang nahezu konstant (ca. $-17\,\mathrm{dB}$), d.\,h.\ langsame Lenkbewegungen
-werden vom Fahrzeug quasi-station\"ar nachgebildet und der Schwimmwinkel bleibt im Verh\"altnis zur Lenkanregung klein.
-Ein Wert von $-17\,\mathrm{dB}$ entspricht einem Amplitudenverh\"altnis von ungef\"ahr
-$|G|\approx 10^{-17/20}\approx 0{,}14$, sodass bei einer Sinusanregung mit $\hat{\delta}=1^\circ$ eine
-Schwimmwinkelamplitude von etwa $\hat{\beta}\approx 0{,}14^\circ$ zu erwarten ist.
+Im Folgenden werden Betrag und Phase für charakteristische Frequenzbereiche getrennt diskutiert.
 
-Im Bereich um $\omega \approx 8$--$10\,\mathrm{rad/s}$ ist eine \"Uberh\"ohung (Peak) erkennbar (ca. $-10\,\mathrm{dB}$).
-Dies deutet auf ein unterd\"ampftes Eigenverhalten des Systems hin: Bei Anregung nahe dieser charakteristischen Frequenz
-reagiert der Schwimmwinkel \"uberproportional, was im Zeitbereich typischerweise mit \"Uberschwingen bzw. ged\"ampften
-Schwingungen einhergeht. Oberhalb dieses Bereichs f\"allt der Amplitudengang stark ab, was einem Tiefpassverhalten entspricht:
-Schnelle Lenkanregungen werden aufgrund von Tr\"agheit und Dynamik des Fahrzeugs nur noch stark abgeschw\"acht in $\beta$
-abgebildet.
+\paragraph{Niederfrequenzbereich (quasi-stationär).}
+\emph{Betrag:} Für kleine Frequenzen ist der Betrag nahezu konstant bei ca.\ $-17\,\mathrm{dB}$.
+Dies entspricht $|G|\approx 10^{-17/20}\approx 0{,}14$. Damit ergibt sich bei $\hat{\delta}=1^\circ$ eine
+Schwimmwinkelamplitude von etwa $\hat{\beta}\approx 0{,}14^\circ$.
+\emph{Reaktion:} Das Fahrzeug folgt langsamen Lenkanregungen weitgehend quasi-stationär; der Schwimmwinkel bleibt
+im Verhältnis zum Lenkwinkel klein.
 
-Der Phasengang startet bei niedrigen Frequenzen nahe $180^\circ$ (entspricht einer Vorzeichenumkehr in der gew\"ahlten
-Signaldefinition) und dreht im \"Ubergangsbereich stark ab. F\"ur hohe Frequenzen n\"ahert sich die Phase etwa $-90^\circ$,
-was ein deutlich verz\"ogertes Folgeverhalten des Schwimmwinkels gegen\"uber der Lenkanregung beschreibt:
-Bei schnellen Lenkoszillationen kann das System nicht mehr unmittelbar folgen, sondern reagiert zunehmend phasenverschoben.
+\emph{Phase:} Die Phase liegt im Niederfrequenzbereich nahe $180^\circ$, d.\,h.\ das Vorzeichen der Übertragung ist
+(in der verwendeten Signaldefinition) invertiert. In diesem Bereich ist die Phasenänderung über der Frequenz gering.
+\emph{Reaktion:} Der Schwimmwinkel ist damit bei langsamer Anregung nahezu gegenphasig zur Lenkanregung (gemäß
+Vorzeichenkonvention), ohne ausgeprägte zusätzliche Verzögerung.
+
+\paragraph{Übergangs- und Überhöhungsbereich (ca.\ $f\approx 1$ bis $1{,}5\,\mathrm{Hz}$).}
+\emph{Betrag:} In diesem Bereich ist eine deutliche Überhöhung erkennbar; der Betrag steigt bis auf etwa
+$-11\,\mathrm{dB}$ an, entsprechend $|G|\approx 10^{-11/20}\approx 0{,}28$.
+Damit liegt die erwartete Schwimmwinkelamplitude bei $\hat{\delta}=1^\circ$ bei ungefähr
+$\hat{\beta}\approx 0{,}28^\circ$.
+\emph{Reaktion:} Das Fahrzeug reagiert hier besonders empfindlich auf periodische Lenkanregungen; $\beta$ nimmt
+relativ zu langsamen Lenkbewegungen deutlich zu (erhöhter Seitenversatz der Bewegungsrichtung relativ zur Fahrzeugachse).
+
+\emph{Phase:} Parallel zur Überhöhung tritt eine ausgeprägte Phasendrehung auf; die Phase fällt in diesem
+Frequenzband stark von ihrem niederfrequenten Niveau ab.
+\emph{Reaktion:} Neben der stärkeren Ausprägung wird die Antwort auch dynamischer: der Schwimmwinkel folgt der
+Lenkanregung nicht mehr quasi-stationär, sondern mit deutlich veränderter Phasenlage im Vergleich zum Niederfrequenzfall.
+
+\paragraph{Hochfrequenzbereich (Tiefpasscharakter).}
+\emph{Betrag:} Oberhalb des Überhöhungsbereichs fällt der Betrag kontinuierlich ab. Beispielsweise liegt der Betrag
+bei etwa $10\,\mathrm{Hz}$ bei ca.\ $-30\,\mathrm{dB}$ ($|G|\approx 0{,}032$) und bei $100\,\mathrm{Hz}$ bei etwa
+$-50\,\mathrm{dB}$ ($|G|\approx 0{,}0032$). Entsprechend ergeben sich bei $\hat{\delta}=1^\circ$ nur noch sehr kleine
+Schwimmwinkelamplituden (Größenordnung $10^{-2}\,^\circ$ bei $10\,\mathrm{Hz}$ bzw.\ $10^{-3}\,^\circ$ bei $100\,\mathrm{Hz}$).
+\emph{Reaktion:} Schnelle Lenkschwingungen werden hinsichtlich des Schwimmwinkels stark gedämpft; $\beta$ zeigt nur
+noch geringe Ausschläge.
+
+\emph{Phase:} Im Hochfrequenzbereich nähert sich die Phase einem Grenzwert von ungefähr $-90^\circ$ an.
+\emph{Reaktion:} Die verbleibende (kleine) Schwimmwinkelantwort ist dabei deutlich phasenverschoben, d.\,h.\ sie tritt
+im Vergleich zur Lenkanregung zunehmend verzögert auf.
