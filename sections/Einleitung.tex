@@ -1,0 +1,79 @@
+
+In dieser Arbeit wird ein Einspurmodell zur Beschreibung der lateralen Fahrzeugdynamik
+untersucht. Grundlage der Analyse sind sowohl ein nichtlineares als auch ein linearisiertes
+Modell, welche simulativ in Simulink umgesetzt wurden.
+
+Der Arbeit liegen zwei Simulink-Dateien bei. Die erste Datei enthält sowohl das
+nichtlineare als auch das linearisierte Einspurmodell. Diese wurde für die Aufgaben~2 und~3
+verwendet, in denen die Modellgleichungen implementiert sowie das Verhalten des linearen
+und des nichtlinearen Systems miteinander verglichen wird.
+
+Die zweite Simulink-Datei enthält ausschließlich das linearisierte Modell und wurde für die
+Untersuchung des Frequenzverhaltens in den Aufgaben~4 und~5 verwendet, insbesondere für die
+Bestimmung des Frequenzgangs und die Darstellung der Bodediagramme.
+
+Zusätzlich ist ein MATLAB-Live-Skript beigefügt, in dem die Aufgaben~1, 4 und~5 bearbeitet
+wurden. Darin sind die analytischen Berechnungen sowie die Auswertung der Simulationen
+und Frequenzgänge umgesetzt.
+
+Die Grundlage des verwendeten Modells bilden die folgenden nichtlinearen Differentialgleichungen
+des Einspurmodells, wie sie in der Aufgabenstellung gegeben sind. Diese beschreiben die
+Schräglaufwinkel der Reifen sowie die Dynamik des Schwimmwinkels $\beta$ und der Gierrate
+$\dot{\Psi}$.
+
+\subsection{Nichtlineare Modellgleichungen}
+
+Dynamik des Schwimmwinkels:
+\begin{equation}
+\dot{\beta}
+=
+-\dot{\Psi}
++
+\frac{1}{m v}
+\left(
+c_v \alpha_v \frac{\cos(\delta)}{\cos(\beta)}
++
+c_h \alpha_h \frac{1}{\cos(\beta)}
+\right)
+\label{eq:betadot}
+\end{equation}
+
+Dynamik der Gierrate:
+\begin{equation}
+\ddot{\Psi}
+=
+\frac{1}{J}
+\left(
+l_v c_v \alpha_v \cos(\delta)
+-
+l_h c_h \alpha_h
+\right)
+\label{eq:psiddot}
+\end{equation}
+
+Schräglaufwinkel an der Vorderachse:
+\begin{equation}
+\alpha_v
+=
+\delta
+-
+\frac{l_v \dot{\Psi}}{v \cos(\beta)}
++
+\tan(\beta)
+\label{eq:alphav}
+\end{equation}
+
+Schräglaufwinkel an der Hinterachse:
+\begin{equation}
+\alpha_h
+=
+\frac{l_h \dot{\Psi}}{v \cos(\beta)}
+-
+\tan(\beta)
+\label{eq:alphah}
+\end{equation}
+
+Dabei bezeichnet $m$ die Fahrzeugmasse, $v$ die Fahrzeuggeschwindigkeit,
+$J$ das Trägheitsmoment um die Hochachse, $l_v$ und $l_h$ die Abstände des
+Schwerpunkts zu Vorder- bzw. Hinterachse sowie $c_v$ und $c_h$ die
+Reifensteifigkeiten der Vorder- und Hinterachse.

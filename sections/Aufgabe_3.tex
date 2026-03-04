@@ -5,9 +5,9 @@
 
 \subsection{Betriebspunkt und Linearisierungsannahmen}
 Betriebspunkt (Geradeausfahrt):
-\begin{equation}
+\begin{equation*}
 \delta_0 = 0,\qquad \beta_0 = 0,\qquad \dot{\Psi}_0 = 0.
-\end{equation}
+\end{equation*}
 
 Für kleine Winkel um $0$ (in rad) werden die nichtlinearen Terme durch Taylor-Approximationen 1. Ordnung ersetzt:
 \begin{align}
@@ -16,50 +16,16 @@ Für kleine Winkel um $0$ (in rad) werden die nichtlinearen Terme durch Taylor-A
 \cos(\delta) &\approx 1. \label{eq:cosdeltalin}
 \end{align}
 
-% ------------------------------------------------
-\subsection{Linearisierung der Schräglaufwinkel}
-
-\subsubsection{Vorderachse}
-Aus der Aufgabenstellung:
-\begin{equation}
-\alpha_v \;=\; \delta \;-\;\frac{l_v\,\dot{\Psi}}{v\,\cos(\beta)}\;+\;\tan(\beta).
-\end{equation}
-Linearisierung 1. Ordnung mittels \eqref{eq:tanlin} und \eqref{eq:cosbetalin}:
-\begin{align}
-\alpha_v
-&\approx \delta \;-\;\frac{l_v\,\dot{\Psi}}{v}\;+\;\beta.
-\end{align}
-Damit ergibt sich der linearisierte Schräglaufwinkel an der Vorderachse:
-\begin{equation}
-\boxed{\alpha_v^{\mathrm{lin}} \;=\; \delta \;+\;\beta \;-\;\frac{l_v}{v}\,\dot{\Psi}}
-\end{equation}
-
-\subsubsection{Hinterachse}
-Aus der Aufgabenstellung:
-\begin{equation}
-\alpha_h \;=\; \frac{l_h\,\dot{\Psi}}{v\,\cos(\beta)}\;-\;\tan(\beta).
-\end{equation}
-Linearisierung 1. Ordnung mittels \eqref{eq:tanlin} und \eqref{eq:cosbetalin}:
-\begin{align}
-\alpha_h
-&\approx \frac{l_h\,\dot{\Psi}}{v}\;-\;\beta.
-\end{align}
-Damit ergibt sich der linearisierte Schräglaufwinkel an der Hinterachse:
-\begin{equation}
-\boxed{\alpha_h^{\mathrm{lin}} \;=\; -\beta \;+\;\frac{l_h}{v}\,\dot{\Psi}}
-\end{equation}
-
-% ------------------------------------------------
 \subsection{Linearisierung der \texorpdfstring{$\dot{\beta}$}{beta-dot}-Gleichung}
 
-Aus der Aufgabenstellung:
-\begin{equation}
+Aus der Aufgabenstellung \eqref{eq:betadot}:
+\begin{equation*}
 \dot{\beta} \;=\; -\dot{\Psi} \;+\; \frac{1}{m\,v}
 \left(
 c_v\,\alpha_v\,\frac{\cos(\delta)}{\cos(\beta)} \;+\;
 c_h\,\alpha_h\,\frac{1}{\cos(\beta)}
 \right).
-\end{equation}
+\end{equation*}
 
 Linearisierung der rein trigonometrischen Faktoren mittels \eqref{eq:cosbetalin} und \eqref{eq:cosdeltalin}:
 \begin{equation}
@@ -80,15 +46,15 @@ c_h\,\alpha_h^{\mathrm{lin}}
 % ------------------------------------------------
 \subsection{Linearisierung der \texorpdfstring{$\ddot{\Psi}$}{Psi-ddot}-Gleichung}
 
-Aus der Aufgabenstellung:
-\begin{equation}
+Aus der Aufgabenstellung \eqref{eq:psiddot}:
+\begin{equation*}
 \ddot{\Psi} \;=\; \frac{1}{J}
 \left(
 l_v\,c_v\,\alpha_v\,\cos(\delta)
 \;-\;
 l_h\,c_h\,\alpha_h
 \right).
-\end{equation}
+\end{equation*}
 
 Linearisierung des Faktors $\cos(\delta)$ mittels \eqref{eq:cosdeltalin}:
 \begin{equation}
@@ -103,6 +69,40 @@ l_h\,c_h\,\alpha_h^{\mathrm{lin}}
 \right)
 }
 \end{equation}
+% ------------------------------------------------
+\subsection{Linearisierung der Schräglaufwinkel}
+
+\subsubsection{Vorderachse}
+Aus der Aufgabenstellung \eqref{eq:alphav}:
+\begin{equation*}
+\alpha_v \;=\; \delta \;-\;\frac{l_v\,\dot{\Psi}}{v\,\cos(\beta)}\;+\;\tan(\beta).
+\end{equation*}
+Linearisierung 1. Ordnung mittels \eqref{eq:tanlin} und \eqref{eq:cosbetalin}:
+\begin{align*}
+\alpha_v
+&\approx \delta \;-\;\frac{l_v\,\dot{\Psi}}{v}\;+\;\beta.
+\end{align*}
+Damit ergibt sich der linearisierte Schräglaufwinkel an der Vorderachse:
+\begin{equation}
+\boxed{\alpha_v^{\mathrm{lin}} \;=\; \delta \;+\;\beta \;-\;\frac{l_v}{v}\,\dot{\Psi}}
+\end{equation}
+
+\subsubsection{Hinterachse}
+Aus der Aufgabenstellung \eqref{eq:alphah}:
+\begin{equation*}
+\alpha_h \;=\; \frac{l_h\,\dot{\Psi}}{v\,\cos(\beta)}\;-\;\tan(\beta).
+\end{equation*}
+Linearisierung 1. Ordnung mittels \eqref{eq:tanlin} und \eqref{eq:cosbetalin}:
+\begin{align*}
+\alpha_h
+&\approx \frac{l_h\,\dot{\Psi}}{v}\;-\;\beta.
+\end{align*}
+Damit ergibt sich der linearisierte Schräglaufwinkel an der Hinterachse:
+\begin{equation}
+\boxed{\alpha_h^{\mathrm{lin}} \;=\; -\beta \;+\;\frac{l_h}{v}\,\dot{\Psi}}
+\end{equation}
+
+% ------------------------------------------------
 
 % ------------------------------------------------
 \subsection{Simulink-Aufbau und Ergebnisvergleich}
@@ -113,7 +113,7 @@ Zusatzlich wurde die Differenz zwischen linearem und nichtlinearem Modell als Ve
 \subsubsection{Sprung auf $\delta = 5^\circ$}
 Die folgenden Abbildungen zeigen den Vergleich der linearen und nichtlinearen Simulation sowie die zugehorigen Differenzsignale fur den Sprung auf $\delta = 5^\circ$.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{minipage}[t]{0.49\linewidth}
 		\centering
@@ -137,7 +137,7 @@ Auf dem Display wurden die betragmassig maximalen Differenzen mit 0.0031 ($\beta
 \subsubsection{Sprung auf $\delta = 20^\circ$}
 Die folgenden Abbildungen zeigen den Vergleich der linearen und nichtlinearen Simulation sowie die zugehorigen Differenzsignale fur den Sprung auf $\delta = 20^\circ$.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{minipage}[t]{0.49\linewidth}
 		\centering
