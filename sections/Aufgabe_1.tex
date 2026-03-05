@@ -22,49 +22,38 @@ Y =
         \ddot{\psi}
     \end{bmatrix} =
     \begin{bmatrix}
-        -\dot{\psi} + \frac{1}{m\cdot v} \cdot (c_v \alpha_v(\beta) \frac{\cos(\delta)}{\cos(\beta)}+ c_h \alpha_h(\beta) \frac{1}{\cos(\beta)}) \\
-        \frac{1}{J} \cdot (c_v \alpha_v(\beta) l_v \cos(\delta) + c_h \alpha_h(\beta) l_h)
+        -\dot{\psi} + \frac{1}{m\cdot v} \cdot (c_v \alpha_v \frac{\cos(\delta)}{\cos(\beta)}+ c_h \alpha_h \frac{1}{\cos(\beta)}) \\
+        \frac{1}{J} \cdot (c_v \alpha_v l_v \cos(\delta) + c_h \alpha_h l_h)
     \end{bmatrix}
 \end{equation}
 
-mit den Funktionen $\alpha_v(\beta)$ und $\alpha_h(\beta)$ der Schräglaufwinkeln, die wie folgt definiert sind:
-
-\begin{equation}
-    \alpha_v(\beta) = \delta - \frac{l_v\cdot \dot{\psi}}{v\cdot \cos(\beta)} + \tan{\beta} 
-\end{equation}
-\begin{equation}
-    \alpha_h(\beta) = - \frac{l_h\cdot \dot{\psi}}{v\cdot \cos(\beta)} - \tan{\beta}
-\end{equation}
-
-\subsection{Solverauswahl}
-
-Die Dynamik des Systems ist nichtlinear, da die Funktionen $\alpha_v(\beta)$ und $\alpha_h(\beta)$ nichtlinear in Bezug auf $\beta$ und $\dot{\psi}$ sind.
-Die Dynamik des Systems wird auch explizit als glattes System beschrieben, da die Funktionen $\alpha_v(\beta)$ und $\alpha_h(\beta)$ stetig differenzierbar sind.
-
-Nach der Analyse der Dynamik und etwas Ausprobieren verschiedener Solver, haben wir uns für den Solver \texttt{ode45} entschieden, da er für nichtlineare Systeme geeignet ist und eine gute Balance zwischen Genauigkeit und Rechenzeit bietet.
+mit den Funktionen $\alpha_v(\beta)$ \ref{eq:alphav} und $\alpha_h(\beta)$ \ref{eq:alphah} der Schräglaufwinkeln.
 
 
-\subsubsection{Vergleich Solvern}
-Um die Wahl des Solvers zu begründen, haben wir verschiedene Solver ausprobiert und die Ergebnisse verglichen.
-Die Solver \texttt{ode23} und \texttt{ode113} haben ähnliche Ergebnisse geliefert, aber \texttt{ode45} hat eine bessere Genauigkeit und eine schnellere Konvergenz gezeigt.
+\subsection{Plots}
 
-\subsubsection{Konvergenz}
-Die Konvergenz des Solvers wurde durch die Analyse der Fehler zwischen zwei verschiedenen Optimierungsparametern 
-``RelTol'' und ``AbsTol'' überprüft.
-Die Fehler wurden berechnet, indem die Ergebnisse des Solvers mit einem Referenzwert verglichen wurden, der durch eine feinere Auflösung des Solvers erhalten wurde.
-Die Ergebnisse zeigten, dass die Fehler zwischen den verschiedenen Optimierungsparamten ralativ zu
-$\beta = 5^{\circ}$ relativ klein waren, was darauf hindeutet, dass der Solver \texttt{ode45} eine gute Konvergenz aufweist.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{pictures/Gierwinkelgeschwindigkeit.png}
+    \caption{Entwicklung der Gierwinkelgeschwindigkeit $\dot{\psi}$ über die Zeit.}
+    \label{fig:gierwinkelgeschwindigkeit}
+\end{figure}
 
-\subsubsection{Solver Statistiken}
+Abbildung~\ref{fig:gierwinkelgeschwindigkeit} zeigt die Entwicklung der Gierwinkelgeschwindigkeit $\dot{\psi}$ über die Zeit.
+Die Gierwinkelgeschwindigkeit steigt zunächst an, erreicht ein Maximum und fällt dann wieder ab, bevor sie sich schließlich einem stationären Wert annähert.
+Dieses Verhalten deutet auf ein stabiles System hin, da die Gierwinkelgeschwindigkeit nach einem transienten Anstieg wieder abfällt und sich stabilisiert.
+$\dot{\psi}_ss = 12.92 \circ/s$
 
-\begin{table}
-    \begin{tabular}{|c|c|c|}
-        \hline 
-        Solver & Anzahl Schritte & Rechenzeit (s) \\
-        \hline
-        ode45 & 1000 & 0.5 \\
-        ode23 & 1500 & 0.7 \\
-        ode113 & 1200 & 0.6 \\
-        \hline
-    \end{tabular}
-\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{pictures/schwimmwinkel.png}
+    \caption{Entwicklung des Schräglaufwinkels $\beta$ über die Zeit.}
+    \label{fig:schraeglaufwinkel}
+
+\end{figure}
+
+Abbildung~\ref{fig:schraeglaufwinkel} zeigt die Entwicklung des Schräglaufwinkels $\beta$ über die Zeit.
+Der Schräglaufwinkel steigt ebenfalls an, erreicht ein Maximum und fällt dann wieder ab, bevor er sich einem stationären Wert annähert.
+Dieses Verhalten deutet ebenfalls auf ein stabiles System hin, da der Schräglaufwinkel
+nach einem transienten Anstieg wieder abfällt und sich stabilisiert.
+$\beta_{ss} = -0.67 \circ$   

@@ -1,7 +1,5 @@
 %% Frequenzgang des linearen Einspurmodells (0.05 Hz – 100 Hz) – gleiche Plotgröße, exakter Bereich
 
-clear; clc;
-
 mdl = "linear_Einspurmodel";
 load_system(mdl);
 
