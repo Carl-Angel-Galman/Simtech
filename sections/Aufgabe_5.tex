@@ -16,7 +16,7 @@ $\beta_{ss}(v)$, die den stationären Schwimmwinkel in Abhängigkeit von der Ges
 
 \subsection{Optimale Geschwindigkeit}
 Die optimale Geschwindigkeit wird durch die Minimierung des Betrags des stationären Schwimmwinkels $\beta_{ss}(v)$ bestimmt. Hierfür verwenden wir die Funktion \emph{fminbnd}, die eine eindimensionale Funktion minimiert.
-Die Funktion fminbnd benötigt als Eingabe eine Funktion, die in einem gegebenen Intervall minimiert werden soll. In unserem Fall ist die Funktion, die minimiert werden soll, der Betrag des stationären Schwimmwinkels $\beta_{ss}(v)^2$ 
+Die Funktion \emph{fminbnd} benötigt als Eingabe eine Funktion, die in einem gegebenen Intervall minimiert werden soll. In unserem Fall ist die Funktion, die minimiert werden soll, der Betrag des stationären Schwimmwinkels $\beta_{ss}(v)^2$ 
 und das Intervall für die Geschwindigkeit $v$ wird entsprechend der realistischen Fahrgeschwindigkeiten festgelegt, z.B. von 0 bis 200 km/h.
 
 \newpage
@@ -31,11 +31,11 @@ Nullstellenbestimmung, da wir die Geschwindigkeit suchen, bei der der stationär
 für 
 
 \begin{equation*}
-    \beta_{ss}(v) \rightarrow^{v \to v_{opt}} 0
+    \beta_{ss}(v) \rightarrow^{v \to v_{opt}} 0^{\circ}
 \end{equation*}
 
 
-Da fminbnd keine Nullstellen, sondern Minima auf einem Intervall bestimmt, wird das Problem in ein Minimierungsproblem überführt. Dazu definieren wir eine nichtnegative Zielfunktion, eine Gütefunktion $\phi(v)$
+Da \emph{fminbnd} keine Nullstellen, sondern Minima auf einem Intervall bestimmt, wird das Problem in ein Minimierungsproblem überführt. Dazu definieren wir eine nichtnegative Zielfunktion, eine Gütefunktion $\phi(v)$
 \begin{equation*}
     \phi(x) := g(x)^2
 \end{equation*}
@@ -60,14 +60,14 @@ formulieren, was mit \emph{fminbnd} gelöst werden kann.
 \subsection{Optimale Geschwindigkeit und Interpretation des Fahrverhaltens}
 
 Die Optimale Geschwindigkeit $v_{opt}$, bei der der stationäre Schwimmwinkel minimal ist, wurde durch die Anwendung der Funktion \emph{fminbnd} auf die Funktion $\beta_{ss}(v)^2$ bestimmt. 
-mit: 
+\\Mit: 
 \begin{equation*}
     v_{opt} = 13,93 \mathrm{m/s} \approx 50,15 \mathrm{km/h}
 \end{equation*}
 
 und dem entsprechenden stationären Schwimmwinkel von:
 \begin{equation*}
-    \beta_{ss}(v_{opt}) \approx 0 
+    \beta_{ss}(v_{opt}) \approx 0^{\circ}
 \end{equation*}
 
 \begin{figure}[H]
